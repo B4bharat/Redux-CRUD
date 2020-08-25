@@ -1,53 +1,44 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-class PostForm extends Component {
-  handleSubmit = (e) => {
+class EditComponent extends Component {
+  handleEdit = (e) => {
     e.preventDefault();
-    const title = this.getTitle.value;
-    const message = this.getMessage.value;
+    const newTitle = this.getTitle.value;
+    const newMessage = this.getMessage.value;
     const data = {
-      id: new Date(),
-      title,
-      message,
-      editing: false
+      newTitle,
+      newMessage
     };
-
-    this.props.dispatch({
-      type: "ADD_POST",
-      data
-    });
-    this.getTitle.value = "";
-    this.getMessage.value = "";
+    this.props.dispatch({ type: "UPDATE", id: this.props.post.id, data: data });
   };
-
   render() {
     return (
       <div>
-        <h1>Create Post</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleEdit}>
           <input
             required
             type="text"
-            placeholder="Enter Post Title"
             ref={(input) => (this.getTitle = input)}
+            defaultValue={this.props.post.title}
+            placeholder="Enter Post Title"
           />
           <br />
           <br />
           <textarea
             required
             rows="5"
-            cols="28"
             ref={(input) => (this.getMessage = input)}
+            defaultValue={this.props.post.message}
+            cols="28"
             placeholder="Enter Post"
           />
           <br />
           <br />
-          <button>Post</button>
+          <button>Update</button>
         </form>
       </div>
     );
   }
 }
-
-export default connect()(PostForm);
+export default connect()(EditComponent);
